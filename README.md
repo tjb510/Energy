@@ -67,9 +67,9 @@ Specifically, we ask:
 ---
 
 ## **Methods**
-1. **Conceptual Model**  
+**Conceptual Model**  
 
-2. **Game-Theoretic Analysis**  
+1. **Game-Theoretic Analysis**  
    - Devise a **game-theoretic explanation** to determine the **Nash equilibria** for SCP markets.  
    - Analyze how equilibria **vary with different bid structures**.  
 
@@ -79,9 +79,7 @@ Specifically, we ask:
 4. **Numerical Simulations**  
    - Compare SCP with **pay-as-bid** or **reverse second-price** mechanisms.  
 
-5. **Market Manipulation Investigation** *(If Time Permits)*  
-   - Once we **identify how the market can be exploited**, search the publicly available data for **evidence** that utilities/CAISO are engaging in these behaviors.  
-   - This data is publicly available through the **Open Access Same-Time Information System (OASIS) database**.
+If Time Permits, once we **identify how the market can be exploited**, search the publicly available data for **evidence** that utilities/CAISO are engaging in these behaviors.This data is publicly available through the **Open Access Same-Time Information System (OASIS) database**.
 
 ---
 
