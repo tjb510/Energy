@@ -55,7 +55,7 @@ class EnergyMarket:
             bid_objects.append({
                 'player': i,
                 'capacity': self.player_capacities[i],
-                'price': bids[i]
+                'price': bids[i] #each price needs to be updated to array_
             })
         
         # Sort bids by price (ascending)
@@ -88,7 +88,7 @@ class EnergyMarket:
             clearing_price = max(bids)
             
         # Calculate profits for each player
-        player_profits = [0] * self.num_players
+        player_profits = [0] * self.num_players     #equivalent to zeros(self.num_players) in MATLAB
         total_cost = 0
         
         for accepted_bid in accepted_bids:
@@ -110,7 +110,7 @@ class EnergyMarket:
 # Set up genetic algorithm for optimizing bidding strategies
 class BiddingOptimizer:
     def __init__(self, market, player_index, min_bid, max_bid, population_size=50, 
-                 num_generations=50, opponent_strategies=None):
+                 num_generations=100, opponent_strategies=None):
         """
         Initialize the genetic algorithm optimizer for a specific player.
         
@@ -148,7 +148,7 @@ class BiddingOptimizer:
         
         self.toolbox = base.Toolbox()
         
-        # Define gene (bid price)
+        # Define gene (bid price)       #needs to be updated to array_
         self.toolbox.register("attr_float", random.uniform, min_bid, max_bid)
         
         # Initialize individual and population
@@ -168,7 +168,7 @@ class BiddingOptimizer:
         Fitness function - evaluates a bidding strategy by simulating the market.
         
         Args:
-            individual (list): A single bid price
+            individual (list): A single bid price       #needs to be updated to array_
             
         Returns:
             tuple: (profit,) - Note the comma to make it a tuple for DEAP
@@ -211,7 +211,7 @@ class BiddingOptimizer:
         return best_bid, best_profit, logbook
 
 # Run a multi-player iterative optimization
-def optimize_all_players(market, min_bid, max_bid, iterations=10):
+def optimize_all_players(market, min_bid, max_bid, iterations):
     """
     Iteratively optimize all players' strategies.
     
@@ -226,6 +226,7 @@ def optimize_all_players(market, min_bid, max_bid, iterations=10):
     """
     # Initialize with random strategies
     strategies = [random.uniform(min_bid, max_bid) for _ in range(market.num_players)]
+        #each element of strategies needs to be updated to array_
     profit_history = []
     
     # Run iterations
@@ -234,6 +235,7 @@ def optimize_all_players(market, min_bid, max_bid, iterations=10):
         iteration_profits = []
         
         # Optimize each player's strategy
+        # This holds all opponents constant while optimizing the current player
         for player in range(market.num_players):
             # Create opponent strategies (current best for all other players)
             opponent_strategies = strategies.copy()
@@ -241,7 +243,7 @@ def optimize_all_players(market, min_bid, max_bid, iterations=10):
             # Optimize this player
             optimizer = BiddingOptimizer(market, player, min_bid, max_bid, 
                                         opponent_strategies=opponent_strategies)
-            best_bid, best_profit, _ = optimizer.optimize()
+            best_bid, best_profit, _ = optimizer.optimize() #best_bid needs to be updated to array_
             
             # Update this player's strategy
             strategies[player] = best_bid
@@ -305,19 +307,19 @@ def plot_optimization_results(market, final_strategies, profit_history):
 def run_simulation():
     # Market parameters
     num_players = 5
-    player_capacities = [100, 150, 200, 125, 175]  # MW
+    player_capacities = [100, 150, 110, 125, 175]  # MW
     demand = 500  # MW
     
     # Bid constraints
     min_bid = 10  # $/MW
-    max_bid = 100  # $/MW
+    max_bid = 500  # $/MW
     
     # Create market
     market = EnergyMarket(num_players, player_capacities, demand)
     
     # Run optimization
     final_strategies, profit_history = optimize_all_players(
-        market, min_bid, max_bid, iterations=10)
+        market, min_bid, max_bid, iterations=100)
     
     # Plot results
     plot_optimization_results(market, final_strategies, profit_history)
